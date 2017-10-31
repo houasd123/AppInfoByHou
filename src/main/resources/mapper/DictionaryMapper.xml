@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.appinfodb.mapper.DictionaryMapper">
+    <insert id="add" parameterType="Dictionary">
+        INSERT INTO data_dictionary
+        (
+            id,typeCode,typeName,valueId,valueName,createdBy,creationDate,modifyBy,modifyDate
+        )
+        VALUES
+        (
+            #{id},#{typeCode},#{typeName},#{valueId},#{valueName},#{createdBy},#{creationDate},#{modifyBy},#{modifyDate}
+        )
+    </insert>
+
+    <delete id="deleteDictionaryById" parameterType="int">
+        DELETE FROM data_dictionary WHERE id=#{id}
+    </delete>
+
+    <update id="update" parameterType="Dictionary">
+        UPDATE data_dictionary
+        <trim prefix="set" suffixOverrides=",">
+           <if test="id != null">id = #{id},</if>
+           <if test="typeCode != null">typeCode = #{typeCode},</if>
+           <if test="typeName != null">typeName = #{typeName},</if>
+           <if test="valueId != null">valueId = #{valueId},</if>
+           <if test="valueName != null">valueName = #{valueName},</if>
+           <if test="createdBy != null">createdBy = #{createdBy},</if>
+           <if test="creationDate != null">creationDate = #{creationDate},</if>
+           <if test="modifyBy != null">modifyBy = #{modifyBy},</if>
+           <if test="modifyDate != null">modifyDate = #{modifyDate},</if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+
+    <select id="getDictionaryCount" parameterType="map" resultType="int">
+        SELECT COUNT(1) FROM data_dictionary
+        <include refid="dictionary_where" />
+    </select>
+
+    <select id="getDictionaryById" parameterType="int" resultType="Dictionary">
+        SELECT * FROM data_dictionary WHERE id=#{id}
+    </select>
+
+    <select id="getDictionaryByMap" parameterType="map" resultType="Dictionary">
+        SELECT * FROM data_dictionary
+        <include refid="dictionary_where" />
+    </select>
+
+    <select id="getDictionaryListByObj" parameterType="map" resultType="Dictionary">
+        SELECT * from data_dictionary
+        <include refid="dictionary_where" />
+    </select>
+
+    <select id="getDictionaryPageByMap" parameterType="map" resultType="Dictionary">
+        SELECT * from data_dictionary
+        <include refid="dictionary_where" />
+        limit #{currPageNo},#{pageSize}
+    </select>
+
+    <sql id="dictionary_where">
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id != null">and id = #{id}</if>
+            <if test="typeCode != null">and typeCode = #{typeCode}</if>
+            <if test="typeName != null">and typeName = #{typeName}</if>
+            <if test="valueId != null">and valueId = #{valueId}</if>
+            <if test="valueName != null">and valueName = #{valueName}</if>
+            <if test="createdBy != null">and createdBy = #{createdBy}</if>
+            <if test="creationDate != null">and creationDate = #{creationDate}</if>
+            <if test="modifyBy != null">and modifyBy = #{modifyBy}</if>
+            <if test="modifyDate != null">and modifyDate = #{modifyDate}</if>
+        </trim>
+    </sql>
+
+</mapper>
